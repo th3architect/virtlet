@@ -22,9 +22,9 @@ import (
 	"testing"
 	"time"
 
+	kubeapi "github.com/Mirantis/virtlet/pkg/runtimeapi/v1_10"
 	"github.com/davecgh/go-spew/spew"
 	"golang.org/x/net/context"
-	kubeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/v1alpha1/runtime"
 )
 
 type imageTester struct {

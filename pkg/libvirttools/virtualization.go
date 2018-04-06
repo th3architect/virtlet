@@ -22,11 +22,11 @@ import (
 	"strings"
 	"time"
 
+	kubeapi "github.com/Mirantis/virtlet/pkg/runtimeapi/v1_10"
 	"github.com/golang/glog"
 	"github.com/jonboulle/clockwork"
 	libvirtxml "github.com/libvirt/libvirt-go-xml"
 	"k8s.io/apimachinery/pkg/fields"
-	kubeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/v1alpha1/runtime"
 	kubetypes "k8s.io/kubernetes/pkg/kubelet/types"
 
 	"github.com/Mirantis/virtlet/pkg/metadata"

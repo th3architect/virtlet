@@ -19,9 +19,9 @@ package metadata
 import (
 	"testing"
 
+	kubeapi "github.com/Mirantis/virtlet/pkg/runtimeapi/v1_10"
 	"github.com/boltdb/bolt"
 	"github.com/jonboulle/clockwork"
-	kubeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/v1alpha1/runtime"
 
 	"github.com/Mirantis/virtlet/tests/criapi"
 )

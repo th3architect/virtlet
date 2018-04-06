@@ -23,9 +23,9 @@ import (
 	"path/filepath"
 	"testing"
 
+	kubeapi "github.com/Mirantis/virtlet/pkg/runtimeapi/v1_10"
 	"github.com/davecgh/go-spew/spew"
 	"golang.org/x/net/context"
-	kubeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/v1alpha1/runtime"
 
 	"github.com/Mirantis/virtlet/pkg/flexvolume"
 	"github.com/Mirantis/virtlet/pkg/utils"

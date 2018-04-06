@@ -19,7 +19,7 @@ package integration
 import (
 	"testing"
 
-	kubeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/v1alpha1/runtime"
+	kubeapi "github.com/Mirantis/virtlet/pkg/runtimeapi/v1_10"
 )
 
 func TestPodStatuses(t *testing.T) {

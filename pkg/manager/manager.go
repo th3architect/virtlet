@@ -24,6 +24,7 @@ import (
 	"syscall"
 	"time"
 
+	kubeapi "github.com/Mirantis/virtlet/pkg/runtimeapi/v1_10"
 	cnitypes "github.com/containernetworking/cni/pkg/types"
 	cnicurrent "github.com/containernetworking/cni/pkg/types/current"
 	"github.com/davecgh/go-spew/spew"
@@ -31,7 +32,6 @@ import (
 	"github.com/jonboulle/clockwork"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	kubeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/v1alpha1/runtime"
 
 	"github.com/Mirantis/virtlet/pkg/cni"
 	"github.com/Mirantis/virtlet/pkg/image"
@@ -582,6 +582,11 @@ func (v *VirtletManager) ContainerStats(ctx context.Context, in *kubeapi.Contain
 func (v *VirtletManager) ListContainerStats(ctx context.Context, in *kubeapi.ListContainerStatsRequest) (*kubeapi.ListContainerStatsResponse, error) {
 	glog.V(2).Infof("ListContainerStats: %s", spew.Sdump(in))
 	return nil, errors.New("ListContainerStats() not implemented")
+}
+
+func (v *VirtletManager) ReopenContainerLog(ctx context.Context, in *kubeapi.ReopenContainerLogRequest) (*kubeapi.ReopenContainerLogResponse, error) {
+	glog.V(2).Infof("ReopenContainerLogRequest: %s", spew.Sdump(in))
+	return &kubeapi.ReopenContainerLogResponse{}, nil
 }
 
 //

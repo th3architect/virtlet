@@ -22,9 +22,9 @@ import (
 	"errors"
 	"fmt"
 
+	kubeapi "github.com/Mirantis/virtlet/pkg/runtimeapi/v1_10"
 	"github.com/boltdb/bolt"
 	"k8s.io/apimachinery/pkg/fields"
-	kubeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/v1alpha1/runtime"
 )
 
 var (

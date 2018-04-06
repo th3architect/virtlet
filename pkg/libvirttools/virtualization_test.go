@@ -25,9 +25,9 @@ import (
 	"testing"
 	"time"
 
+	kubeapi "github.com/Mirantis/virtlet/pkg/runtimeapi/v1_10"
 	"github.com/jonboulle/clockwork"
 	"github.com/libvirt/libvirt-go-xml"
-	kubeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/v1alpha1/runtime"
 	kubetypes "k8s.io/kubernetes/pkg/kubelet/types"
 
 	"github.com/Mirantis/virtlet/pkg/flexvolume"

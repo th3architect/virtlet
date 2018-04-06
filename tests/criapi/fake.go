@@ -1,8 +1,8 @@
 package criapi
 
 import (
+	kubeapi "github.com/Mirantis/virtlet/pkg/runtimeapi/v1_10"
 	"github.com/Mirantis/virtlet/pkg/utils"
-	kubeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/v1alpha1/runtime"
 	"strconv"
 )
 

@@ -29,18 +29,36 @@ import (
 
 	"k8s.io/client-go/tools/remotecommand"
 
-	kubeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/v1alpha1/runtime"
+	kubeapi "github.com/Mirantis/virtlet/pkg/runtimeapi/v1_10"
+	kubeapi_old "k8s.io/kubernetes/pkg/kubelet/apis/cri/v1alpha1/runtime"
 	kubecontainer "k8s.io/kubernetes/pkg/kubelet/container"
 )
 
 // GetAttach returns attach stream request
 func (s *Server) GetAttach(req *kubeapi.AttachRequest) (*kubeapi.AttachResponse, error) {
-	return s.streamServer.GetAttach(req)
+	r, err := s.streamServer.GetAttach(&kubeapi_old.AttachRequest{
+		ContainerId: req.ContainerId,
+		Stdin:       req.Stdin,
+		Tty:         req.Tty,
+		Stdout:      req.Stdout,
+		Stderr:      req.Stderr,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &kubeapi.AttachResponse{Url: r.Url}, nil
 }
 
 // GetPortForward returns pofrforward stream request
 func (s *Server) GetPortForward(req *kubeapi.PortForwardRequest) (*kubeapi.PortForwardResponse, error) {
-	return s.streamServer.GetPortForward(req)
+	r, err := s.streamServer.GetPortForward(&kubeapi_old.PortForwardRequest{
+		PodSandboxId: req.PodSandboxId,
+		Port:         req.Port,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &kubeapi.PortForwardResponse{Url: r.Url}, nil
 }
 
 // Attach endpoint for streaming.Runtime
