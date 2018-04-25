@@ -185,7 +185,7 @@ func (v *VirtletManager) RunPodSandbox(ctx context.Context, in *kubeapi.RunPodSa
 		if status.State == kubeapi.PodSandboxState_SANDBOX_READY {
 			return &kubeapi.RunPodSandboxResponse{
 				PodSandboxId: podID,
-			}, err
+			}, nil
 		}
 	}
 
@@ -217,13 +217,20 @@ func (v *VirtletManager) RunPodSandbox(ctx context.Context, in *kubeapi.RunPodSa
 		// this will cause kubelet to delete the pod sandbox and then retry
 		// its creation
 		state = kubeapi.PodSandboxState_SANDBOX_NOTREADY
-		glog.Errorf("Error when adding pod %s (%s) to CNI network: %v", podName, podID, err)
+		err = fmt.Errorf("Error when adding pod %s (%s) to CNI network: %v", podName, podID, err)
+		glog.Error(err)
 	}
 
-	psi, err := metadata.NewPodSandboxInfo(config, csnBytes, state, clockwork.NewRealClock())
-	if err != nil {
-		glog.Errorf("Error serializing pod %q (%q) sandbox configuration: %v", podName, podID, err)
-		return nil, err
+	psi, mdErr := metadata.NewPodSandboxInfo(config, csnBytes, state, clockwork.NewRealClock())
+	if mdErr != nil {
+		mdErr = fmt.Errorf("Error serializing pod %q (%q) sandbox configuration: %v", podName, podID, mdErr)
+		glog.Error(mdErr)
+
+		// cleanup cni if we could not add pod to metadata store to prevent resource leaking
+		if err := v.fdManager.ReleaseFDs(podID); err != nil {
+			glog.Errorf("Error removing pod %s (%s) from CNI network: %v", podName, podID, err)
+		}
+		return nil, mdErr
 	}
 
 	sandbox = v.metadataStore.PodSandbox(config.Metadata.Uid)
@@ -233,6 +240,11 @@ func (v *VirtletManager) RunPodSandbox(ctx context.Context, in *kubeapi.RunPodSa
 		},
 	); storeErr != nil {
 		glog.Errorf("Error when creating pod sandbox for pod %s (%s): %v", podName, podID, storeErr)
+
+		// cleanup cni if we could not add pod to metadata store to prevent resource leaking
+		if err := v.fdManager.ReleaseFDs(podID); err != nil {
+			glog.Errorf("Error removing pod %s (%s) from CNI network: %v", podName, podID, err)
+		}
 		return nil, storeErr
 	}
 
